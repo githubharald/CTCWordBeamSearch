@@ -1,0 +1,14 @@
+*.pyc
+*.svg
+data/bentham_testset/
+out.csv
+*.out
+*.so
+*.db
+*.dll
+*.exe
+*.opendb
+*.suo
+**/.vs
+**/Release
+**/Debug
