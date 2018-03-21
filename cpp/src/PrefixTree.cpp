@@ -53,7 +53,13 @@ void PrefixTree::allWordsAdded()
 		// current node
 		auto& node = nodes.front();
 
-		std::sort(node->children.begin(), node->children.end(), [](const auto& lhs, const auto& rhs) {return lhs.first < rhs.first; });
+		// sort children by label to allow binary search
+		std::sort
+		(
+			node->children.begin()
+			,node->children.end()
+			,[](const std::pair<uint32_t, std::shared_ptr<Node>>& lhs, const std::pair<uint32_t, std::shared_ptr<Node>>& rhs) {return lhs.first < rhs.first; }
+		);
 
 		// go over all child nodes
 		for (const auto& kv : node->children)
@@ -149,7 +155,7 @@ std::shared_ptr<PrefixTree::Node> PrefixTree::getNode(const std::vector<uint32_t
 	for (const auto c : text)
 	{
 		// find child element representing current char (binary search)
-		auto iter = std::lower_bound(node->children.begin(), node->children.end(), c, [](const auto& p, const auto val) {return p.first < val; });
+		auto iter = std::lower_bound(node->children.begin(), node->children.end(), c, [](const std::pair<uint32_t, std::shared_ptr<Node>>& p, uint32_t val) {return p.first < val; });
 		if (iter == node->children.end() || iter->first > c)
 		{
 			// not found
