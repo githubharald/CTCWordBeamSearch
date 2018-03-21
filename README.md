@@ -62,7 +62,7 @@ This repository contains:
     * TensorFlow test program: Python script which uses the custom op and the test data to verify that everything works
     * Test program: executable which reads test data and decodes it. Not needed for TensorFlow, however, developing and debugging is much easier this way
 * Python implementation: the prototype implementation of the algorithm. This is the best place to try new things or play around with the algorithm without having to think about the C++ compiler or TensorFlow
-* Paper: gives a detailed explaination of the algorithm and evaluates it using the Bentham HTR dataset
+* Paper: gives a detailed explanation of the algorithm and evaluates it using the Bentham HTR dataset
 
 ## Usage
 
@@ -70,12 +70,13 @@ This section explains how to compile the TensorFlow custom operation, how to tes
 The C++ code can also be compiled into an executable.
 Further, a prototype of the algorithm is implemented in Python without any dependency to TensorFlow.
 
-### TenorFlow Custom Op
+### TensorFlow Custom Op
 
 #### 1. Compile
 
 Go to the ```cpp/proj/``` directory and run the script ```buildTF.sh```.
-This creates a library object (Linux only, tested with Ubuntu 16.04 and TensorFlow 1.3.0).
+This creates a library object (Linux only, tested with Ubuntu 16.04, g++ 5.4.0 and TensorFlow 1.3.0, 1.4.0, 1.5.0 and 1.6.0).
+For more information see [TF documentation](https://www.tensorflow.org/extend/adding_an_op).
 
 #### 2. Test Custom Op
 
