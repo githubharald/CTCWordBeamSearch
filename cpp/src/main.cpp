@@ -44,6 +44,8 @@ int main()
 		std::cout << "Average Time: " << std::chrono::duration_cast<std::chrono::milliseconds>(currTime-startTime).count()/(ctr+1) << "ms\n\n";
 		++ctr;
 	}
+
+	std::cout << "Time: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - startTime).count() << "ms\n";
 #endif
 
 	std::cout<<"Press any key to continue\n";

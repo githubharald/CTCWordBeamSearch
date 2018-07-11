@@ -3,6 +3,7 @@
 #include <set>
 #include <iostream>
 #include <algorithm>
+#include <cassert>
 
 
 LanguageModel::LanguageModel(const std::string& corpus, const std::string& chars, const std::string& wordChars, LanguageModelType lmType, double addK)
@@ -34,19 +35,23 @@ LanguageModel::LanguageModel(const std::string& corpus, const std::string& chars
 	}
 
 
-	// create unique ids for unique words
-	uint32_t currUID = 0;
+	// calc unigram, add words to tree
+	const double wordWeight = 1.0 / wordList.size();
 	for (const auto& w : wordList)
 	{
-		if (m_uniqueWordIDs.find(w) == m_uniqueWordIDs.end())
+		// not yet in list: add to list and add to tree
+		if (m_unigrams.find(w) == m_unigrams.end())
 		{
 			// add to prefix tree
 			m_tree.addWord(w);
 
 			// assign unique id
-			m_uniqueWordIDs[w] = currUID;
-			currUID++;
+			m_unigrams[w] = Unigram();
 		}
+
+		Unigram& unigram = m_unigrams[w];
+		unigram.prob += wordWeight;
+		unigram.count++;
 	}
 
 	// all words are added, reorganize tree for faster access
@@ -58,45 +63,32 @@ LanguageModel::LanguageModel(const std::string& corpus, const std::string& chars
 		return;
 	}
 
-	// calc unigram
-	const double wordWeight = 1.0 / wordList.size();
-	for (const auto& w : wordList)
-	{
-		const uint32_t uid = m_uniqueWordIDs[w];
-		m_unigrams[uid] += wordWeight;
-	}
-
 	// calc bigrams
-	std::map<uint32_t, double> unigramsSum;
 	for (size_t i=0; !wordList.empty() && i<wordList.size()-1; ++i)
 	{
 		const std::vector<uint32_t>& w1 = wordList[i];
 		const std::vector<uint32_t>& w2 = wordList[i+1];
-		const uint32_t uid1 = m_uniqueWordIDs[w1];
-		const uint32_t uid2 = m_uniqueWordIDs[w2];
 
-		if (m_bigrams.find(uid1) == m_bigrams.end() || m_bigrams[uid1].find(uid2) == m_bigrams[uid1].end())
+		// insert new bigram if needed
+		assert(m_unigrams.find(w1) != m_unigrams.end());
+		if (m_unigrams[w1].bigrams.find(w2) == m_unigrams[w1].bigrams.end())
 		{
-			m_bigrams[uid1][uid2] = m_addK;
+			m_unigrams[w1].bigrams[w2] = Bigram();
 		}
 
-		m_bigrams[uid1][uid2] += 1.0;
-		unigramsSum[uid1] += 1.0;
+		// add 1 to bigram count
+		Bigram& bigram = m_unigrams[w1].bigrams[w2];
+		bigram.count++;
 	}
 
 	// normalize bigrams
-	for (const auto& kv1 : m_uniqueWordIDs)
+	for (auto& kv1 : m_unigrams)
 	{
-		const uint32_t uid1 = kv1.second;
-		const double unigramSum = unigramsSum[uid1];
-		if (unigramSum < 2)
+		Unigram& unigram = kv1.second;
+		for (auto& kv2 : unigram.bigrams)
 		{
-			continue;
-		}
-
-		for (auto& kv2 : m_bigrams[uid1])
-		{
-			kv2.second /= unigramSum + m_addK*m_unigrams.size();
+			Bigram& bigram = kv2.second;
+			bigram.prob = (bigram.count + m_addK) / (unigram.count + m_addK*m_unigrams.size());
 		}
 	}
 }
@@ -158,52 +150,37 @@ std::string LanguageModel::labelToUtf8(const std::vector<uint32_t>& labelStr)
 
 double LanguageModel::getUnigramProb(const std::vector<uint32_t>& w) const
 {
-	// get word id
-	auto uidIter=m_uniqueWordIDs.find(w);
-	if (uidIter == m_uniqueWordIDs.end())
-	{
-		return 0.0;
-	}
-
-	// get entry for uid
-	auto unigramIter = m_unigrams.find(uidIter->second);
-	if (unigramIter == m_unigrams.end())
+	// get entry for w
+	const auto iter = m_unigrams.find(w);
+	if (iter == m_unigrams.end())
 	{
 		return 0.0;
 	}
 
 	// return unigram prob
-	return unigramIter->second;
+	return iter->second.prob;
 }
 
 
 double LanguageModel::getBigramProb(const std::vector<uint32_t>& w1, const std::vector<uint32_t>& w2) const
 {
-	// get word ids
-	auto uidIter1 = m_uniqueWordIDs.find(w1);
-	auto uidIter2 = m_uniqueWordIDs.find(w2);
-	if (uidIter1 == m_uniqueWordIDs.end() || uidIter2 == m_uniqueWordIDs.end())
+	// get entry for w1
+	const auto iter1 = m_unigrams.find(w1);
+	if (iter1 == m_unigrams.end())
 	{
 		return 0.0;
 	}
 
-
-	// get entry for uid1
-	auto bigramIter1 = m_bigrams.find(uidIter1->second);
-	if (bigramIter1 == m_bigrams.end())
+	// get entry for w2
+	const Unigram& unigram = iter1->second;
+	const auto iter2 = unigram.bigrams.find(w2);
+	if (iter2 == unigram.bigrams.end())
 	{
-		return 0.0;
-	}
-
-	// get entry for uid2 in entry from uid1
-	auto bigramIter2 = bigramIter1->second.find(uidIter2->second);
-	if (bigramIter2 == bigramIter1->second.end())
-	{
-		return m_addK / (getUnigramProb(w1)+m_unigrams.size()*m_addK);
+		return m_addK / (unigram.count + m_addK*m_unigrams.size());
 	}
 
 	// return bigram prob
-	return bigramIter2->second;
+	return iter2->second.prob;
 }
 
 

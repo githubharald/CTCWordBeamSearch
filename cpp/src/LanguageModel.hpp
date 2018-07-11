@@ -1,4 +1,5 @@
 #pragma once
+#include "HashFunction.hpp"
 #include "PrefixTree.hpp"
 #include <string>
 #include <vector>
@@ -46,9 +47,24 @@ public:
 
 private:
 	// words, unigrams and bigrams
-	std::map<std::vector<uint32_t>, uint32_t> m_uniqueWordIDs;
-	std::map<uint32_t, double> m_unigrams;
-	std::map<uint32_t, std::map<uint32_t, double>> m_bigrams;
+	//std::map<std::vector<uint32_t>, uint32_t> m_uniqueWordIDs;
+	//std::map<uint32_t, double> m_unigrams;
+	//std::map<uint32_t, std::map<uint32_t, double>> m_bigrams;
+	struct Bigram
+	{
+		size_t count = 0;
+		double prob = 0.0;
+	};
+
+	struct Unigram
+	{
+		size_t count = 0;
+		double prob = 0.0;
+		std::unordered_map<std::vector<uint32_t>, Bigram, HashFunction> bigrams;
+	};
+
+	std::unordered_map<std::vector<uint32_t>, Unigram, HashFunction> m_unigrams;
+
 	double m_addK = 0.0; // add-k smoothing
 
 	// prefix tree

@@ -30,7 +30,7 @@ void PrefixTree::addWord(const std::vector<uint32_t>& word)
 
 		if (i + 1 == len)
 		{
-			node->isWord = true;
+			node->word = word;
 		}
 	}
 }
@@ -82,7 +82,7 @@ bool PrefixTree::isWord(const std::vector<uint32_t>& text) const
 		return false;
 	}
 
-	return node->isWord;
+	return !node->word.empty();
 }
 
 
@@ -113,35 +113,43 @@ std::vector<std::vector<uint32_t>> PrefixTree::getNextWords(const std::vector<ui
 	{
 		return res;
 	}
+
+	// cache for level 1
+	const bool isLevel1 = text.size() == 1;
+	const auto cacheIter = m_level1Cache.find(text[0]);
+	if (isLevel1 && cacheIter != m_level1Cache.end())
+	{
+		return cacheIter->second;
+	}
 	
 	// search all words starting with the given prefix
 	std::deque<std::shared_ptr<Node>> nodes = { startNode };
-	std::deque<std::vector<uint32_t>> prefixes = { text };
 	while (!nodes.empty())
 	{
-		// current node and prefix
+		// current node
 		const auto& node=nodes.front();
-		const auto& prefix = prefixes.front();
 
 		// go over all child nodes
 		for (const auto& kv : node->children)
 		{
 			// add node
 			nodes.push_back(kv.second);
-			// add char to prefix
-			prefixes.push_back(prefix);
-			prefixes.back().push_back(kv.first);
 		}
 
 		// remember current prefix if it is a word
-		if (node->isWord)
+		if (!node->word.empty())
 		{
-			res.push_back(prefix);
+			res.push_back(node->word);
 		}
 		
-		// remove current node and prefix from queue
+		// remove current node from queue
 		nodes.pop_front();
-		prefixes.pop_front();
+	}
+
+	// put result for level 1 into cache
+	if (isLevel1)
+	{
+		m_level1Cache[text[0]] = res;
 	}
 
 	return res;

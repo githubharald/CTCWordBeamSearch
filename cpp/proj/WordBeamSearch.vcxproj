@@ -32,6 +32,7 @@
   <ItemGroup>
     <ClInclude Include="..\src\Beam.hpp" />
     <ClInclude Include="..\src\DataLoader.hpp" />
+    <ClInclude Include="..\src\HashFunction.hpp" />
     <ClInclude Include="..\src\IMatrix.hpp" />
     <ClInclude Include="..\src\LanguageModel.hpp" />
     <ClInclude Include="..\src\MatrixCSV.hpp" />

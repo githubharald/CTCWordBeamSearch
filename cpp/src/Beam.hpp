@@ -1,4 +1,5 @@
 #pragma once
+#include "HashFunction.hpp"
 #include "LanguageModel.hpp"
 #include <vector>
 #include <memory>
@@ -56,22 +57,6 @@ private:
 };
 
 
-// calculate hash for a beam text
-struct BeamHash
-{
-	size_t operator()(const std::vector<uint32_t>& text) const
-	{
-		// taken from: https://stackoverflow.com/questions/20511347/a-good-hash-function-for-a-vector
-		std::size_t res = text.size();
-		for (const auto& l : text)
-		{
-			res ^= l + 0x9e3779b9 + (res << 6) + (res >> 2);
-		}
-		return res;
-	}
-};
-
-
 // holds all beams at one time-step
 class BeamList
 {
@@ -83,6 +68,6 @@ public:
 	std::vector<std::shared_ptr<Beam>> getBestBeams(size_t beamWidth);
 
 private:
-	std::unordered_map<std::vector<uint32_t>, std::shared_ptr<Beam>, BeamHash> m_beams;
+	std::unordered_map<std::vector<uint32_t>, std::shared_ptr<Beam>, HashFunction> m_beams;
 };
 

@@ -29,9 +29,10 @@ private:
 	struct Node
 	{
 		std::vector<std::pair<uint32_t, std::shared_ptr<Node>>> children;
-		bool isWord = false;
+		std::vector<uint32_t> word;
 	};
 
 	std::shared_ptr<Node> m_root; // the root represents the empty text
 	std::shared_ptr<Node> getNode(const std::vector<uint32_t>& text) const; // get the node for a given text
+	mutable std::map<uint32_t, std::vector<std::vector<uint32_t>>> m_level1Cache; // cache words of nodes in level 1
 };
