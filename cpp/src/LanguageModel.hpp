@@ -47,9 +47,6 @@ public:
 
 private:
 	// words, unigrams and bigrams
-	//std::map<std::vector<uint32_t>, uint32_t> m_uniqueWordIDs;
-	//std::map<uint32_t, double> m_unigrams;
-	//std::map<uint32_t, std::map<uint32_t, double>> m_bigrams;
 	struct Bigram
 	{
 		size_t count = 0;
