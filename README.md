@@ -213,4 +213,6 @@ Accumulated CER and WER so far: CER: 0.0555555555556 WER: 0.0833333333333
 ## Algorithm Details
 
 Interested in how the algorithm works?
-Have a look into [this paper](doc/report.pdf).
+A short overview is given in this [poster](doc/poster.pdf).
+More details can be found in the [report](doc/report.pdf).
+
