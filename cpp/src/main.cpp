@@ -29,7 +29,7 @@ int main()
 	while (loader.hasNext())
 	{
 		// get data
-		const auto&  data=loader.getNext();
+		const auto data = loader.getNext();
 
 		// decode it
 		const auto res = wordBeamSearch(data.mat, 10, lm, lmType);
