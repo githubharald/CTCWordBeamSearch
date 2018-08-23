@@ -48,19 +48,17 @@ Token passing uses a dictionary and a word-level LM and therefore gets all words
 However, it is not able to recognize arbitrary character strings like numbers.
 Word beam search is able to recognize the words by using a dictionary, but it is also able to correctly identify the non-word characters.
 
-![overview](./doc/comparison.png)
-
+![comparison](./doc/comparison.png)
 
 This algorithm is well suited when a large amount of words to be recognized is known in advance.
 An overview of the inputs and the output of the algorithm is given in the illustration below.
-
-![overview](./doc/overview.png)
-
-
 The RNN output is fed into the algorithm.
 Textual input enables word beam search decoding to create a dictionary and LM.
 Different settings control how the LM scores the beams (text candidates) and how many beams are kept per time-step.
 The algorithm outputs the decoded text.
+
+![overview](./doc/overview.png)
+
 
 ## Contents
 
