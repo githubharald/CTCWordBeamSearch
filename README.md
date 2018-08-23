@@ -34,16 +34,30 @@ Word beam search decoding is placed right after the RNN layers to decode the out
 
 ## Algorithm
 
-The recognized words are constrained by a dictionary.
-However, there is a free-mode such that strings of non-word characters like numbers and punctuation marks are also recognized.
-A word-level Language Model (LM) can optionally be enabled. 
+The four main properties of word beam search are:
+
+* Words constrained by dictionary
+* Allows arbitrary number of non-word characters between words (numbers, punctuation marks)
+* Optional word-level Language Model (LM)
+* Faster than token passing
+
+The following sample shows a typical use-case of word beam search along with the results given by five different decoders.
+Best path decoding and vanilla beam search get the words wrong as these decoders only use the noisy output of the optical model.
+Extending vanilla beam search by a character-level LM improves the result by only allowing likely character sequences.
+Token passing uses a dictionary and a word-level LM and therefore gets all words right.
+However, it is not able to recognize arbitrary character strings like numbers.
+Word beam search is able to recognize the words by using a dictionary, but it is also able to correctly identify the non-word characters.
+
+![overview](./doc/comparison.png)
+
+
 This algorithm is well suited when a large amount of words to be recognized is known in advance.
-An overview of the algorithm is given in the illustration below.
+An overview of the inputs and the output of the algorithm is given in the illustration below.
 
 ![overview](./doc/overview.png)
 
 
-The RNN output is fed into the algorithm and decoded. 
+The RNN output is fed into the algorithm.
 Textual input enables word beam search decoding to create a dictionary and LM.
 Different settings control how the LM scores the beams (text candidates) and how many beams are kept per time-step.
 The algorithm outputs the decoded text.
