@@ -138,7 +138,7 @@ assert(len(chars)+1==mat.shape[2])
 # load custom TF op
 word_beam_search_module=tf.load_op_library('../cpp/proj/TFWordBeamSearch.so')
 
-# decode node using the "Words" mode of word beam search
+# decode using the "Words" mode of word beam search
 decode=word_beam_search_module.word_beam_search(mat, 25, 'Words', 0.0, corpus.encode('utf8'), chars.encode('utf8'), wordChars.encode('utf8'))
 
 # feed matrix of shape TxBxC and evaluate TF graph
@@ -163,6 +163,9 @@ for label in res[batch]:
 		break
 	s+=chars[label]
 ```
+
+Want to see a use-case of word beam search decoding?
+Have a look at the repository [SimpleHTR](https://github.com/githubharald/SimpleHTR) which optionally uses this decoder.
 
 ### C++ Test Program
 
