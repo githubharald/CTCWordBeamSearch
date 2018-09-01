@@ -128,7 +128,7 @@ public:
 
 
 #ifdef WBS_PARALLEL
-	// split batch groups of batch elements
+	// split batch into groups of batch elements
 	std::vector<std::vector<size_t>> splitWork(size_t numThreads, size_t batchSize)
 	{
 		std::vector<std::vector<size_t>> res(numThreads);
@@ -159,7 +159,7 @@ public:
 
 
 #ifdef WBS_PARALLEL
-	// do the work for a work group
+	// do the work for a group of batch elements
 	template<class U, class V>
 	void doWork(const U& inputMapped, V& outputMapped, const std::vector<std::vector<size_t>>& work, size_t threadIdx, size_t maxT, size_t maxC)
 	{
