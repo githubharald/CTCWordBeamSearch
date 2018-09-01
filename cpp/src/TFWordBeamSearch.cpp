@@ -35,8 +35,6 @@ REGISTER_OP("WordBeamSearch")
 using namespace tensorflow;
 
 
-
-
 // custom TF op
 class TFWordBeamSearch : public OpKernel 
 {
@@ -114,9 +112,23 @@ public:
 
 	}
 
+	
+	// fill result from decoder into output tensor
+	template<class U>
+	void fillResult(const std::vector<uint32_t>& decoded, U& outputMapped, size_t batchElement, size_t maxT, size_t maxC)
+	{
+		const size_t blank = maxC - 1;
+
+		// write to output tensor
+		for(size_t t = 0; t < maxT; ++t)
+		{
+			outputMapped(batchElement, t) = t < decoded.size() ? decoded[t] : blank;
+		}
+	}
+
 
 #ifdef WBS_PARALLEL
-	// split batch into work groups
+	// split batch groups of batch elements
 	std::vector<std::vector<size_t>> splitWork(size_t numThreads, size_t batchSize)
 	{
 		std::vector<std::vector<size_t>> res(numThreads);
@@ -143,32 +155,28 @@ public:
 
 		return res;
 	}
+#endif
 
 
+#ifdef WBS_PARALLEL
 	// do the work for a work group
 	template<class U, class V>
-	void doWork(const U& inputMapped, V& outputMapped, size_t maxT, size_t maxC, size_t threadIndex, const std::vector<std::vector<size_t>>& workIndices)
+	void doWork(const U& inputMapped, V& outputMapped, const std::vector<std::vector<size_t>>& work, size_t threadIdx, size_t maxT, size_t maxC)
 	{
-		const std::vector<size_t>& indices = workIndices[threadIndex];
-		const size_t blank = maxC - 1;
-		for(auto idx : indices)
+		const std::vector<size_t>& batchElements = work[threadIdx];
+		for(auto b : batchElements)
 		{
 			// wrapper around Tensor
-			MatrixTensor<decltype(inputMapped)> mat(inputMapped, idx, maxT, maxC);
+			MatrixTensor<decltype(inputMapped)> mat(inputMapped, b, maxT, maxC);
 
 			// apply decoding algorithm to batch element 
 			const std::vector<uint32_t> decoded = wordBeamSearch(mat, m_beamWidth, m_lm, m_lmType);
-
+			
 			// write to output tensor
-			for(size_t t = 0; t < maxT; ++t)
-			{
-				outputMapped(idx, t) = t < decoded.size() ? decoded[t] : blank;
-			}
-
+			fillResult(decoded, outputMapped, b, maxT, maxC);
 		}
 	}
 #endif
-
 
 	
 	// computation in TF graph
@@ -177,12 +185,12 @@ public:
 		// input: TxBxC, float32
 		const Tensor& inputTensor = context->input(0);
 		const auto inputShape = inputTensor.shape();
-		const auto maxT = inputShape.dim_size(0);
-		const auto maxB = inputShape.dim_size(1);
-		const auto maxC = inputShape.dim_size(2);
+		const size_t maxT = inputShape.dim_size(0);
+		const size_t maxB = inputShape.dim_size(1);
+		const size_t maxC = inputShape.dim_size(2);
 		
 		// check tensor size
-		if(static_cast<size_t>(maxC) != m_numChars + 1)
+		if(maxC != m_numChars + 1)
 		{
 			throw std::invalid_argument("the number of characters (chars) plus 1  must equal dimension 2 of the tensor (mat)");
 		}
@@ -192,19 +200,19 @@ public:
 
 		// output: BxT, int32
 		Tensor* outputTensor = nullptr;
-		OP_REQUIRES_OK(context, context->allocate_output(0, TensorShape({maxB, maxT}), &outputTensor));
+		OP_REQUIRES_OK(context, context->allocate_output(0, TensorShape({static_cast<int>(maxB), static_cast<int>(maxT)}), &outputTensor));
 		auto outputMapped = outputTensor->tensor<int32, 2>();
 
 #ifdef WBS_PARALLEL
 		// split work into number of threads
 		const size_t numThreads = WBS_THREADS;
-		const auto workIndices = splitWork(numThreads, maxB);
+		const auto work = splitWork(numThreads, maxB);
 
 		// start threads
 		std::vector<std::thread> workers;
 		for(size_t th = 0; th < numThreads; ++th)
 		{
-			workers.push_back(std::thread([&, th](){doWork(inputMapped, outputMapped, maxT, maxC, th, workIndices);}));
+			workers.push_back(std::thread( [&, th] () {doWork(inputMapped, outputMapped, work, th, maxT, maxC);} ));
 		}
 
 		// wait until all threads finished the work
@@ -214,20 +222,16 @@ public:
 		}
 #else
 		// go over all batch elements
-		const size_t blank = maxC - 1;
-		for(int b = 0; b < maxB; ++b)
+		for(size_t b = 0; b < maxB; ++b)
 		{
 			// wrapper around Tensor
 			MatrixTensor<decltype(inputMapped)> mat(inputMapped, b, maxT, maxC);
 
 			// apply decoding algorithm to batch element 
 			const std::vector<uint32_t> decoded = wordBeamSearch(mat, m_beamWidth, m_lm, m_lmType);
-
+			
 			// write to output tensor
-			for(int t = 0; t < maxT; ++t)
-			{
-				outputMapped(b, t) = t < static_cast<int>(decoded.size()) ? decoded[t] : blank;
-			}
+			fillResult(decoded, outputMapped, b, maxT, maxC);
 		}
 #endif
 	}
