@@ -32,6 +32,7 @@ Word beam search decoding is placed right after the RNN layers to decode the out
 
 ![context](./doc/context.png)
 
+
 ## Algorithm
 
 The four main properties of word beam search are:
@@ -76,6 +77,7 @@ This repository contains:
 * Python implementation: the prototype implementation of the algorithm. This is the best place to try new things or play around with the algorithm without having to think about the C++ compiler or TensorFlow
 * Paper: gives a detailed explanation of the algorithm and evaluates it using the Bentham HTR dataset
 
+
 ## Usage
 
 This section explains how to compile the TensorFlow custom operation, how to test it and how to use it. 
@@ -86,8 +88,10 @@ Further, a prototype of the algorithm is implemented in Python without any depen
 
 #### 1. Compile
 
-Go to the ```cpp/proj/``` directory and run the script ```buildTF.sh```.
-This creates a library object (Linux only, tested with Ubuntu 16.04, g++ 5.4.0 and TensorFlow 1.3.0, 1.4.0, 1.5.0 and 1.6.0).
+Go to the ```cpp/proj/``` directory and run the script ```./buildTF.sh```.
+If you want to split the decoding of a batch among multiple threads, add the command line parameters ```PARALLEL NUM_THREADS```, e.g. ```./buildTF.sh PARALLEL 8``` to use 8 threads.
+Best performance if achieved when the number of threads equals the number of cores on your CPU.
+The script creates a library object (Linux only, tested with Ubuntu 16.04, g++ 5.4.0 and TensorFlow 1.3.0, 1.4.0, 1.5.0 and 1.6.0).
 For more information see [TF documentation](https://www.tensorflow.org/extend/adding_an_op).
 
 #### 2. Test Custom Op
@@ -169,7 +173,7 @@ Have a look at the repository [SimpleHTR](https://github.com/githubharald/Simple
 
 ### C++ Test Program
 
-Go to the ```cpp/proj/``` directory and run the script ```build.sh``` or open ```WordBeamSearch.sln``` with Visual Studio.
+Go to the ```cpp/proj/``` directory and run the script ```./build.sh``` or open ```WordBeamSearch.sln``` with Visual Studio.
 This creates an executable (Linux and Windows).
 The expected output is as follows:
 
@@ -225,9 +229,28 @@ Editdistance: 4
 Accumulated CER and WER so far: CER: 0.0555555555556 WER: 0.0833333333333
 ```
 
+
 ## Algorithm Details
 
 Interested in how the algorithm works?
 A short overview is given in this [poster](doc/poster.pdf).
 More details can be found in the [report](doc/report.pdf).
+A link to the ICFHR 2018 paper will be provided as soon as possible.
+
+
+## Citation
+
+Please cite this ICFHR 2018 paper if you are using word beam search decoding in your research work.
+```text
+@inproceedings{scheidl2018wordbeamsearch,
+	title = {Word Beam Search: A Connectionist Temporal Classification Decoding Algorithm},
+	author = {Scheidl, H. and Fiel, S. and Sablatnig, R.},
+	booktitle = {16th International Conference on Frontiers in Handwriting Recognition},
+	pages = {253--258},
+	year = {2018},
+	organization = {IEEE}
+}
+
+```
+
 
