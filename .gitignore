@@ -9,6 +9,7 @@ out.csv
 *.exe
 *.opendb
 *.suo
+*.swp
 **/.vs
 **/Release
 **/Debug

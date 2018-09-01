@@ -1,11 +1,18 @@
 #!/bin/bash
 
 
-# check if parallel decoding is enabled
-if [ "$1" == "PARALLEL" ];
-then
-	echo "Parallel decoding with $2 threads"
-	PARALLEL="-DWBS_PARALLEL -DWBS_THREADS=$2"
+# check if parallel decoding is enabled: specify PARALLEL NUMTHREADS, e.g. PARALLEL 8
+if [ "$1" == "PARALLEL" ]; then
+
+	# default to 4 threads if not specified
+	if [ -z "$2" ]; then
+		NUMTHREADS="4"
+	else
+		NUMTHREADS=$2
+	fi
+
+	echo "Parallel decoding with $NUMTHREADS threads"
+	PARALLEL="-DWBS_PARALLEL -DWBS_THREADS=$NUMTHREADS"
 else
 	echo "Single-threaded decoding"
 	PARALLEL=""

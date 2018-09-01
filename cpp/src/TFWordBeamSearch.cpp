@@ -212,10 +212,10 @@ public:
 		std::vector<std::thread> workers;
 		for(size_t th = 0; th < numThreads; ++th)
 		{
-			workers.push_back(std::thread( [&, th] () {doWork(inputMapped, outputMapped, work, th, maxT, maxC);} ));
+			workers.push_back(std::thread( [&, th] { doWork(inputMapped, outputMapped, work, th, maxT, maxC); } ));
 		}
 
-		// wait until all threads finished the work
+		// wait until all threads finished their work
 		for(auto& w : workers)
 		{
 			w.join();
