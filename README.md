@@ -233,7 +233,7 @@ Accumulated CER and WER so far: CER: 0.0555555555556 WER: 0.0833333333333
 ## Algorithm Details
 
 Interested in how the algorithm works?
-A short overview is given in this [poster](doc/poster.pdf).
+A short overview is given in the [poster](doc/poster.pdf).
 More details can be found in the [ICFHR 2018 paper](https://repositum.tuwien.ac.at/obvutwoa/content/titleinfo/2774578).
 
 
