@@ -75,7 +75,7 @@ This repository contains:
     * TensorFlow test program: Python script which uses the custom operation and the test data to verify that everything works
     * Test program: executable which reads test data and decodes it. Not needed for TensorFlow, however, developing and debugging is much easier this way
 * Python implementation: the prototype implementation of the algorithm. This is the best place to try new things or play around with the algorithm without having to think about the C++ compiler or TensorFlow
-* Paper: gives a detailed explanation of the algorithm and evaluates it using the Bentham HTR dataset
+* Paper: gives a detailed explanation of how the algorithm works and evaluates it using the IAM and Bentham HTR datasets
 
 
 ## Usage
@@ -234,13 +234,12 @@ Accumulated CER and WER so far: CER: 0.0555555555556 WER: 0.0833333333333
 
 Interested in how the algorithm works?
 A short overview is given in this [poster](doc/poster.pdf).
-More details can be found in the [report](doc/report.pdf).
-A link to the ICFHR 2018 paper will be provided as soon as possible.
+More details can be found in the [ICFHR 2018 paper](https://repositum.tuwien.ac.at/obvutwoa/content/titleinfo/2774578).
 
 
 ## Citation
 
-Please cite the following paper if you are using word beam search decoding in your research work.
+Please cite the following [paper](https://repositum.tuwien.ac.at/obvutwoa/content/titleinfo/2774578) if you are using word beam search decoding in your research work.
 ```text
 @inproceedings{scheidl2018wordbeamsearch,
 	title = {Word Beam Search: A Connectionist Temporal Classification Decoding Algorithm},
