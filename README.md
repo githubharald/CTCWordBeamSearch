@@ -252,9 +252,20 @@ Selecting the **scoring mode** depends on the quality of the language model and 
 Finally, the **smoothing** parameter has to be set if you use "NGrams", "NGramsForecast" or "NGramsForecastAndSample".
 If there is a beam with word-pairs (bigrams) not contained in the corpus, the LM would assign zero probability.
 To avoid this and therefore allow recognizing unknown word-pairs, add-k smoothing can be applied.
-The larger the smoothing value, the larger the score of unknown word-pairs.
+The larger the smoothing value, the larger the score for unknown word-pairs.
 Setting the smoothing value to 0 disables smoothing.
 As a rule of thumb, a value between 0 and 1 should be suitable and can be tuned on a validation set.
+
+
+## FAQ
+
+1. I want to use Python 2.7 instead of Python 3: Python 2.7 is not supported. However, it should still be possible to use Python 2.7: change all occurrences of "python3" to "python2" in the build script `buildTF.sh` in the directory `cpp/proj/`.
+2. I get an "undefined symbol" error when dynamically loading the custom operation into TF: the build script assumes the situation that a pre-built TF is used, while a g++ compiler with version >=5 is used to compile the custom operation. In other cases it might be necessary to modify the build script, e.g. remove the define `-D_GLIBCXX_USE_CXX11_ABI=0`. For more information see the [TensorFlow documentation](https://www.tensorflow.org/extend/adding_an_op) or [this issue](https://github.com/githubharald/CTCWordBeamSearch/issues/12).
+3. What is the difference between the chars and the wordChars parameter: the algorithm has to know which characters form a word for two reasons. First, it has to extract words from the corpus. Second, the decoding depends on the type of character: the algorithm constrains words to those contained in a dictionary while it allows arbitrary non-word-character strings. For both tasks the algorithm has to know from which characters words can be built. There is no automatic way to distinguish between word-characters and non-word-characters (like simply using the regular expression r"\w+"): to give an example, we might or might not want the character ' (as used in "don't") to be a word-character.
+4. Why is 0<len(wordChars)<len(chars) required: there must be at least one character from which words are built. Further, there must be at least one character separating words (like whitespace, comma, ...).
+5. How to create a mat_X.csv file: it is advisable to directly integrate the custom operation into the TF computation graph. However, especially when debugging the code it makes sense to use the C++ test program and read all data from files. The matrix file (mat_X.csv) is expected to have one time-step of the RNN output per line. Each line contains all character scores before applying the softmax operation (to be clear: the softmax operation must not be applied). The last entry in each line must be the CTC-blank. Each column is terminated by a semicolon, including the last column.
+6. Is it possible to integrate the algorithm into other frameworks too: the operation is only provided for TF. However, it should not be a problem to integrate it into other frameworks like CNTK or PyTorch. The TF integration can be found in the file [TFWordBeamSearch.cpp](./cpp/src/TFWordBeamSearch.cpp), other frameworks are likely to provide a similar interface to integrate custom operations. Even if not advisable, it is always possible to dump the neural network output into a file (mat_X.csv) and then invoke the C++ standalone application to read this file and decode it.
+7. Should I use the parallel mode of the custom operation: this is a new feature which needs more testing. However, it might greatly speed-up decoding by processing individual batch elements in parallel. If you encounter any problems, please report them and meanwhile switch back to synchronous mode.
 
 
 ## Algorithm Details
