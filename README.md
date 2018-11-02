@@ -230,6 +230,33 @@ Accumulated CER and WER so far: CER: 0.0555555555556 WER: 0.0833333333333
 ```
 
 
+## Hyperparameters
+
+There are three hyperparameters you have to set: beam width, scoring mode and LM smoothing.
+
+The **beam width** specifies the number of text candidates kept at each iteration step of the algorithm.
+Setting the beam width is a trade-off between accuracy and performance.
+In the following plot the character error rate (the lower, the better) depending on the beam width is shown for vanilla beam search (VBS) and word beam search (WBS) for the IAM dataset: while a small beam width is sufficient for vanilla beam search, word beam search benefits from using larger values.
+The reason for this behavior is shown in the table containing the five top-scoring beams for both algorithms.
+There is a lower variability of the texts in the case of word beam search: the texts mainly differ in punctuation, therefore more beams are necessary to recover from a wrong word-prediction.
+As a rule of thumb, a value between 15 and 50 should be suitable and can be tuned on a validation set.
+
+![output](./doc/beamwidth.png)
+
+Selecting the **scoring mode** depends on the quality of the language model and the time-constraints:
+
+* If you only have a list of words, choose the "Words" mode. It only constrains the words but does not score seeing words next to each other. It is the fastest mode.
+* If you have a large text corpus which contains enough of the word-pairs (bigrams) to be recognized, choose "NGrams" mode. It additionally scores seeing words next to each other. It is a bit slower than "Words" mode, but still feasible for practical purposes.
+* Choosing the forecast modes greatly increases the running time. Only select "NGramsForecast" or "NGramsForecastAndSample" if the increase in running time also increases the accuracy by a reasonable amount.
+
+Finally, the **smoothing** parameter has to be set if you use "NGrams", "NGramsForecast" or "NGramsForecastAndSample".
+If there is a beam with word-pairs (bigrams) not contained in the corpus, the LM would assign zero probability.
+To avoid this and therefore allow recognizing unknown word-pairs, add-k smoothing can be applied.
+The larger the smoothing value, the larger the score of unknown word-pairs.
+Setting the smoothing value to 0 disables smoothing.
+As a rule of thumb, a value between 0 and 1 should be suitable and can be tuned on a validation set.
+
+
 ## Algorithm Details
 
 Interested in how the algorithm works?
