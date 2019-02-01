@@ -105,9 +105,9 @@ public:
 
 		// check string sizes now and the mat size later in the Compute method
 		const size_t numWordChars = m_lm->getWordChars().size();
-		if(!(numWordChars > 0 && numWordChars < m_numChars))
+		if(!(numWordChars > 0 && numWordChars <= m_numChars))
 		{
-			throw std::invalid_argument("wordChars must contain at least one character and at least one character less than chars: 0<len(wordChars)<len(chars)");
+			throw std::invalid_argument("check length of chars and wordChars: 0<len(wordChars)<=len(chars)");
 		}
 
 	}
@@ -192,7 +192,7 @@ public:
 		// check tensor size
 		if(maxC != m_numChars + 1)
 		{
-			throw std::invalid_argument("the number of characters (chars) plus 1  must equal dimension 2 of the tensor (mat)");
+			throw std::invalid_argument("the number of characters (chars) plus 1  must equal dimension 2 of the input tensor (mat)");
 		}
 
 		// input tensor
