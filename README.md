@@ -267,6 +267,7 @@ As a rule of thumb, a value between 0 and 1 should be suitable and can be tuned 
 6. Is it possible to integrate the algorithm into other frameworks too: the operation is only provided for TF. However, it should not be a problem to integrate it into other frameworks like CNTK or PyTorch. The TF integration can be found in the file [TFWordBeamSearch.cpp](./cpp/src/TFWordBeamSearch.cpp), other frameworks are likely to provide a similar interface to integrate custom operations. Even if not advisable, it is always possible to dump the neural network output into a file (mat_X.csv) and then invoke the C++ standalone application to read this file and decode it.
 7. Should I use the parallel mode of the custom operation: this is a new feature which needs more testing. However, it might greatly speed-up decoding by processing individual batch elements in parallel. If you encounter any problems, please report them and meanwhile switch back to synchronous mode.
 8. I need variable sequence length support / I need the beam-score: see [weinman/CTCWordBeamSearch](https://github.com/weinman/CTCWordBeamSearch/tree/var_seq_len).
+9. I want to compile the custom operation for Windows 7/8/10: This is not possible. TensorFlow does not support custom operations for Windows.
 
 
 ## Algorithm Details
