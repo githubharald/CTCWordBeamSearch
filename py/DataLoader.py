@@ -13,7 +13,8 @@ def softmax(mat):
 	res=np.zeros(mat.shape)
 	for t in range(maxT):
 		y=mat[t,:]
-		e=np.exp(y)
+		maxValue = np.max(y)
+		e=np.exp(y - maxValue)
 		s=np.sum(e)
 		res[t,:]=e/s
 
