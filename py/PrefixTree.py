@@ -10,7 +10,7 @@ class Node:
 		
 	def __str__(self):
 		s=''
-		for (k,_) in self.children.items():
+		for k in self.children.keys():
 			s+=k
 		return 'isWord: '+str(self.isWord)+'; children: '+s
 
@@ -60,7 +60,7 @@ class PrefixTree:
 		chars=[]
 		node=self.getNode(text)
 		if node:
-			for k,_ in node.children.items():
+			for k in node.children.keys():
 				chars.append(k)
 		return chars
 	
@@ -93,7 +93,7 @@ class PrefixTree:
 		nodes=[self.root]
 		while len(nodes)>0:
 			# put all children into list
-			for _,v in nodes[0].children.items():
+			for v in nodes[0].children.values():
 				nodes.append(v)
 			
 			# dump current node
