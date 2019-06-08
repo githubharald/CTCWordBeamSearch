@@ -50,7 +50,7 @@ class LanguageModel:
 		
 		# create prefix tree
 		self.tree=PrefixTree() # create empty tree
-		self.tree.addWords(words) # add all unique words to tree
+		self.tree.addWords(uniqueWords) # add all unique words to tree
 		
 		# list of all chars, word chars and nonword chars
 		self.allChars=chars
