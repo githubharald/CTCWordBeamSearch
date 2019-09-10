@@ -89,8 +89,7 @@ Further, a prototype of the algorithm is implemented in Python without any depen
 #### 1. Compile
 
 Go to the ```cpp/proj/``` directory and run the script ```./buildTF.sh```.
-If you want to split the decoding of a batch among multiple threads, add the command line parameters ```PARALLEL NUM_THREADS```, e.g. ```./buildTF.sh PARALLEL 8``` to use 8 threads.
-Best performance if achieved when the number of threads equals the number of cores on your CPU.
+As an experimental feature, multi-thread decoding can be enabled by adding the command line parameter ```PARALLEL NUM_THREADS```, e.g. ```./buildTF.sh PARALLEL 8``` to use 8 threads.
 The script creates a library object (Linux only, tested with Ubuntu 16.04, g++ 5.4.0 and TF 1.3.0, 1.4.0, 1.5.0 and 1.6.0).
 For more information see [TF documentation](https://www.tensorflow.org/extend/adding_an_op).
 
@@ -265,7 +264,7 @@ As a rule of thumb, a value between 0 and 1 should be suitable and can be tuned 
 4. Why is 0<len(wordChars)<len(chars) required when recognizing multiple words like text-lines: there must be at least one character separating words (like whitespace, comma, ...).
 5. How to create a mat_X.csv file: it is advisable to directly integrate the custom operation into the TF computation graph. However, especially when debugging the code it makes sense to use the C++ test program and read all data from files. The matrix file (mat_X.csv) is expected to have one time-step of the RNN output per line. Each line contains all character scores before applying the softmax operation (to be clear: the softmax operation must not be applied). The last entry in each line must be the CTC-blank. Each column is terminated by a semicolon, including the last column.
 6. Is it possible to integrate the algorithm into other frameworks too: the operation is only provided for TF. However, it should not be a problem to integrate it into other frameworks like CNTK or PyTorch. The TF integration can be found in the file [TFWordBeamSearch.cpp](./cpp/src/TFWordBeamSearch.cpp), other frameworks are likely to provide a similar interface to integrate custom operations. Even if not advisable, it is always possible to dump the neural network output into a file (mat_X.csv) and then invoke the C++ standalone application to read this file and decode it.
-7. Should I use the parallel mode of the custom operation: this is a new feature which needs more testing. However, it might greatly speed-up decoding by processing individual batch elements in parallel. If you encounter any problems, please report them and meanwhile switch back to synchronous mode.
+7. Should I use the parallel mode of the custom operation: this is an experimental feature which needs more testing. However, it might greatly speed-up decoding by processing individual batch elements in parallel. If you encounter any problems, please report them and meanwhile switch back to synchronous mode.
 8. I need variable sequence length support / I need the beam-score: see [weinman/CTCWordBeamSearch](https://github.com/weinman/CTCWordBeamSearch/tree/var_seq_len).
 9. I want to compile the custom operation for Windows 7/8/10: This is not possible. TensorFlow does not support custom operations for Windows.
 
