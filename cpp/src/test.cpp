@@ -21,7 +21,7 @@ void test()
 
 
 	// test language model
-	auto lm = LanguageModel("this is a text. this and that.", "abcdefghijklmnopqrstuvwxyz., ","abcdefghijklmnopqrstuvwxyz", LanguageModelType::NGrams);
+	LanguageModel lm("this is a text. this and that.", "abcdefghijklmnopqrstuvwxyz., ","abcdefghijklmnopqrstuvwxyz", LanguageModelType::NGrams);
 	assert(lm.getUnigramProb(lm.utf8ToLabel("this")) == 2.0 / 7.0);
 	assert(lm.getUnigramProb(lm.utf8ToLabel("yyy")) == 0.0);
 	assert(lm.getBigramProb(lm.utf8ToLabel("this"), lm.utf8ToLabel("and")) == 1.0 / 2.0);

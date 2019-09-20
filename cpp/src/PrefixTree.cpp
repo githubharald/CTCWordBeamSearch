@@ -116,18 +116,22 @@ std::vector<std::vector<uint32_t>> PrefixTree::getNextWords(const std::vector<ui
 
 	// cache for level 1
 	const bool isLevel1 = text.size() == 1;
-	const auto cacheIter = m_level1Cache.find(text[0]);
-	if (isLevel1 && cacheIter != m_level1Cache.end())
+	if (isLevel1)
 	{
-		return cacheIter->second;
+		std::lock_guard<std::mutex> lock(m_mutex);
+		const auto cacheIter = m_level1Cache.find(text[0]);
+		if (cacheIter != m_level1Cache.end())
+		{
+			return cacheIter->second;
+		}
 	}
-	
+
 	// search all words starting with the given prefix
 	std::deque<std::shared_ptr<Node>> nodes = { startNode };
 	while (!nodes.empty())
 	{
 		// current node
-		const auto& node=nodes.front();
+		const auto& node = nodes.front();
 
 		// go over all child nodes
 		for (const auto& kv : node->children)
@@ -141,7 +145,7 @@ std::vector<std::vector<uint32_t>> PrefixTree::getNextWords(const std::vector<ui
 		{
 			res.push_back(node->word);
 		}
-		
+
 		// remove current node from queue
 		nodes.pop_front();
 	}
@@ -149,6 +153,7 @@ std::vector<std::vector<uint32_t>> PrefixTree::getNextWords(const std::vector<ui
 	// put result for level 1 into cache
 	if (isLevel1)
 	{
+		std::lock_guard<std::mutex> lock(m_mutex);
 		m_level1Cache[text[0]] = res;
 	}
 
