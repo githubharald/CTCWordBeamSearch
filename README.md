@@ -12,7 +12,8 @@ More details can be found in the Usage section.
 module = tf.load_op_library('TFWordBeamSearch.so')
 
 # decode mat using automatically created dictionary and language model
-# corpus, chars, wordChars are (UTF8 encoded) strings and mat is a tensor (shape TxBxC)
+# corpus, chars, wordChars are (UTF8 encoded) strings and mat is a tensor 
+# of shape TxBxC (T: sequence length,  B: batch size,  C: number of characters including blank)
 beamWidth = 25
 lmType = 'NGrams'
 lmSmoothing = 0.01
