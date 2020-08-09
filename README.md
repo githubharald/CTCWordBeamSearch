@@ -274,12 +274,12 @@ As a rule of thumb, a value between 0 and 1 should be suitable and can be tuned 
 
 Interested in how the algorithm works?
 A short overview is given in the [poster](doc/poster.pdf).
-More details can be found in the [ICFHR 2018 paper](https://repositum.tuwien.ac.at/obvutwoa/content/titleinfo/2774578).
+More details can be found in the [ICFHR 2018 paper](https://repositum.tuwien.at/retrieve/1835).
 
 
 ## Citation
 
-Please cite the following [paper](https://repositum.tuwien.ac.at/obvutwoa/content/titleinfo/2774578) if you are using word beam search decoding in your research work.
+Please cite the following [paper](https://repositum.tuwien.at/retrieve/1835) if you are using word beam search decoding in your research work.
 ```text
 @inproceedings{scheidl2018wordbeamsearch,
 	title = {Word Beam Search: A Connectionist Temporal Classification Decoding Algorithm},
