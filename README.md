@@ -2,6 +2,8 @@
 
 **CTC decoder with dictionary and language model for TensorFlow | C++ implementation | Python implementation**
 
+**Update 2020: Python binding for C++ implementation available**
+
 ## A First Example
 
 The following code-skeleton gives a first impression of how to use the decoding algorithm with TensorFlow (TF).

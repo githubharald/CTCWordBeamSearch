@@ -14,3 +14,6 @@ out.csv
 **/Release
 **/Debug
 **/.idea
+cpp/proj/np/word_beam_search.egg-info
+cpp/proj/np/build
+cpp/proj/np/dist

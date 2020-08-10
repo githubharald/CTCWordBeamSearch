@@ -1,8 +1,10 @@
-from __future__ import print_function
 from __future__ import division
+from __future__ import print_function
+
+import codecs
+
 import numpy as np
 import tensorflow as tf
-import codecs
 
 
 def testCustomOp(feedMat, corpus, chars, wordChars):
