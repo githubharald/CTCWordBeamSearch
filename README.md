@@ -2,7 +2,7 @@
 
 **CTC decoder with dictionary and language model for TensorFlow | C++ implementation | Python implementation**
 
-**Update 2020: Python binding for C++ implementation available**
+**Update 2020: Python binding for C++ implementation available (WORK STILL IN PROGRESS...)**
 
 ## A First Example
 
