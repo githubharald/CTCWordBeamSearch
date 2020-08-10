@@ -2,6 +2,7 @@ If you create a new issue, please provide the following information:
 
 1. Which program causes the problem
 * Custom TF operation
+* NumPy operation (Python package)
 * C++ test program
 * Python prototype
 

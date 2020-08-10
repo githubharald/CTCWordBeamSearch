@@ -19,27 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Beam.cpp" />
-    <ClCompile Include="..\src\DataLoader.cpp" />
-    <ClCompile Include="..\src\LanguageModel.cpp" />
-    <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\MatrixCSV.cpp" />
-    <ClCompile Include="..\src\Metrics.cpp" />
-    <ClCompile Include="..\src\PrefixTree.cpp" />
-    <ClCompile Include="..\src\test.cpp" />
-    <ClCompile Include="..\src\WordBeamSearch.cpp" />
+    <ClCompile Include="..\..\src\Beam.cpp" />
+    <ClCompile Include="..\..\src\DataLoader.cpp" />
+    <ClCompile Include="..\..\src\LanguageModel.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\MatrixCSV.cpp" />
+    <ClCompile Include="..\..\src\Metrics.cpp" />
+    <ClCompile Include="..\..\src\PrefixTree.cpp" />
+    <ClCompile Include="..\..\src\test.cpp" />
+    <ClCompile Include="..\..\src\WordBeamSearch.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Beam.hpp" />
-    <ClInclude Include="..\src\DataLoader.hpp" />
-    <ClInclude Include="..\src\HashFunction.hpp" />
-    <ClInclude Include="..\src\IMatrix.hpp" />
-    <ClInclude Include="..\src\LanguageModel.hpp" />
-    <ClInclude Include="..\src\MatrixCSV.hpp" />
-    <ClInclude Include="..\src\Metrics.hpp" />
-    <ClInclude Include="..\src\PrefixTree.hpp" />
-    <ClInclude Include="..\src\test.hpp" />
-    <ClInclude Include="..\src\WordBeamSearch.hpp" />
+    <ClInclude Include="..\..\src\Beam.hpp" />
+    <ClInclude Include="..\..\src\DataLoader.hpp" />
+    <ClInclude Include="..\..\src\HashFunction.hpp" />
+    <ClInclude Include="..\..\src\IMatrix.hpp" />
+    <ClInclude Include="..\..\src\LanguageModel.hpp" />
+    <ClInclude Include="..\..\src\MatrixCSV.hpp" />
+    <ClInclude Include="..\..\src\Metrics.hpp" />
+    <ClInclude Include="..\..\src\PrefixTree.hpp" />
+    <ClInclude Include="..\..\src\test.hpp" />
+    <ClInclude Include="..\..\src\WordBeamSearch.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4F30DF77-8596-494A-ACF4-D4CF2A96FB4D}</ProjectGuid>

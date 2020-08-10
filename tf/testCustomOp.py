@@ -1,8 +1,10 @@
-from __future__ import print_function
 from __future__ import division
+from __future__ import print_function
+
+import codecs
+
 import numpy as np
 import tensorflow as tf
-import codecs
 
 
 def testCustomOp(feedMat, corpus, chars, wordChars):
@@ -13,7 +15,7 @@ def testCustomOp(feedMat, corpus, chars, wordChars):
 	sess.run(tf.global_variables_initializer())
 
 	# load custom TF op
-	word_beam_search_module = tf.load_op_library('../cpp/proj/TFWordBeamSearch.so')
+	word_beam_search_module = tf.load_op_library('../cpp/proj/tf/TFWordBeamSearch.so')
 
 	# input with shape TxBxC
 	mat=tf.placeholder(tf.float32, shape=feedMat.shape)
