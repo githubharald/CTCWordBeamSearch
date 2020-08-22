@@ -1,5 +1,4 @@
 from setuptools import Extension
-from setuptools import find_packages
 from setuptools import setup
 
 root = 'cpp/src/'

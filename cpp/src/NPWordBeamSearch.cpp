@@ -5,7 +5,6 @@
 #include <cctype>
 #include <memory>
 #include <exception>
-#include <thread>
 #include <cstddef>
 #include <stdint.h>
 #include "MatrixArray.hpp"
@@ -16,7 +15,7 @@
 namespace py = pybind11;
 
 
-// custom TF op
+// pybind11 NumPy interface
 class NPWordBeamSearch
 {
 private:
@@ -27,11 +26,11 @@ private:
 
 public:
 	// CTOR
-	NPWordBeamSearch(size_t beamWidth, std::string lmType, float lmSmoothing, std::string corpus, std::string chars, std::string wordChars)
+	NPWordBeamSearch(size_t beamWidth, std::string lmType, float lmSmoothing, const std::string& corpus, const std::string& chars, const std::string& wordChars)
 	{
 		m_beamWidth = beamWidth;
 
-		// map string to enum (default is Words)
+		// map string to enum
 		std::transform(lmType.begin(), lmType.end(), lmType.begin(), tolower);
 		if (lmType == "words")
 		{
@@ -60,7 +59,7 @@ public:
 		// query number of chars (may be different to chars.size()) to check tensor shape
 		m_numChars = m_lm->getAllChars().size();
 
-		// check string sizes now and the mat size later in the Compute method
+		// check string sizes now and the mat size later in the compute method
 		const size_t numWordChars = m_lm->getWordChars().size();
 		if (!(numWordChars > 0 && numWordChars <= m_numChars))
 		{
@@ -70,10 +69,9 @@ public:
 	}
 
 
-	// computation in TF graph
-	std::vector<std::vector<uint32_t>> compute(py::array_t<double, py::array::c_style | py::array::forcecast> array)
+	// method which gets a NumPy array (TxBxC) as input and returns a list of B lists (label-strings)
+	std::vector<std::vector<uint32_t>> compute(const py::array_t<double, py::array::c_style | py::array::forcecast>& array) const
 	{
-
 		py::buffer_info buf = array.request();
 		const size_t maxT = buf.shape[0];
 		const size_t maxB = buf.shape[1];
@@ -101,10 +99,10 @@ public:
 };
 
 
-
+// register C++ class "NPWordBeamSearch" as "WordBeamSearch" in Python
 PYBIND11_MODULE(word_beam_search, m) {
 	py::class_<NPWordBeamSearch>(m, "WordBeamSearch")
-		.def(py::init<size_t, std::string, float, std::string, std::string, std::string>())
+		.def(py::init<size_t, std::string, float, const std::string&, const std::string&, const std::string&>())
 		.def("compute", &NPWordBeamSearch::compute);
 }
 
