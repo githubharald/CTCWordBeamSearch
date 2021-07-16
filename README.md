@@ -105,7 +105,6 @@ Input to the `WordBeamSearch.compute` method:
 ## Extras
 
 * Python prototype: `prototype/`
-* C++ test program: `cpp/proj/test/`
 * TF custom operation: `cpp/proj/tf/`
 
 

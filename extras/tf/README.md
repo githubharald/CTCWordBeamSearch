@@ -67,7 +67,7 @@ The **label strings** are **terminated by a CTC-blank** if the length is smaller
 The following illustration shows an output with B=3 and T=5. 
 "-" represents the CTC-blank label.
 
-![output](../../../doc/output.png)
+![output](../../doc/output.png)
 
 The following code snippet shows how to get the label string of the first batch element and how to transform it into a character string.
 
