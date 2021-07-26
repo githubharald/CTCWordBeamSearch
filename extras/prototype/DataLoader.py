@@ -41,7 +41,7 @@ class DataLoader:
     "load data from a given directory"
 
     def __init__(self, dataset, sampleEach=1):
-        self.path = '../data/' + dataset + '/'
+        self.path = '../../data/' + dataset + '/'
         self.chars = codecs.open(self.path + 'chars.txt', 'r', 'utf8').read()
         self.wordChars = codecs.open(self.path + 'wordChars.txt', 'r', 'utf8').read()
         self.lm = LanguageModel(codecs.open(self.path + 'corpus.txt', 'r', 'utf8').read(), self.chars, self.wordChars)
