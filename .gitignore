@@ -10,6 +10,7 @@ out.csv
 *.opendb
 *.suo
 *.swp
+*.pyd
 **/.vs
 **/Release
 **/Debug
