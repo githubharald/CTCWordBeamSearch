@@ -1,6 +1,8 @@
 *.pyc
+*.pyd
 *.svg
 data/bentham_testset/
+proj/
 out.csv
 *.out
 *.so
