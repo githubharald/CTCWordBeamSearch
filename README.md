@@ -1,5 +1,6 @@
 # CTC Word Beam Search Decoding Algorithm
 
+* **Update 2024: Support Python versions 3.11 and 3.12**
 * **Update 2021: Python package is the default way of installation**
 * **Update 2020: installable Python package**
 
