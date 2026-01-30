@@ -110,7 +110,7 @@ Word beam search is able to recognize the words by using a dictionary, but it is
 
 More information:
 * A short overview is given in the [poster](doc/poster.pdf)
-* More details can be found in the [ICFHR 2018 paper](https://repositum.tuwien.at/retrieve/1835)
+* More details can be found in the [ICFHR 2018 paper](doc/paper.pdf)
 
 
 ## Extras
@@ -121,7 +121,7 @@ More information:
 
 ## Citation
 
-Please cite the following [paper](https://repositum.tuwien.at/retrieve/1835) if you are using word beam search in your research work.
+Please cite the following [paper](doc/paper.pdf) if you are using word beam search in your research work.
 ```text
 @inproceedings{scheidl2018wordbeamsearch,
 	title = {Word Beam Search: A Connectionist Temporal Classification Decoding Algorithm},
@@ -139,4 +139,4 @@ Please cite the following [paper](https://repositum.tuwien.at/retrieve/1835) if 
 * [Word Beam Search: A CTC Decoding Algorithm](https://towardsdatascience.com/b051d28f3d2e)
 * [Beam Search Decoding in CTC-trained Neural Networks](https://towardsdatascience.com/5a889a3d85a7)
 * [Scheidl - Handwritten Text Recognition in Historical Documents](https://repositum.tuwien.ac.at/obvutwhs/download/pdf/2874742)
-* [Scheidl - Word Beam Search: A Connectionist Temporal Classification Decoding Algorithm](https://repositum.tuwien.ac.at/obvutwoa/download/pdf/2774578)
+* [Scheidl - Word Beam Search: A Connectionist Temporal Classification Decoding Algorithm](doc/paper.pdf)
