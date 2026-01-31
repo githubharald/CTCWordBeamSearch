@@ -138,5 +138,5 @@ Please cite the following [paper](doc/paper.pdf) if you are using word beam sear
 
 * [Word Beam Search: A CTC Decoding Algorithm](https://towardsdatascience.com/b051d28f3d2e)
 * [Beam Search Decoding in CTC-trained Neural Networks](https://towardsdatascience.com/5a889a3d85a7)
-* [Scheidl - Handwritten Text Recognition in Historical Documents](https://repositum.tuwien.ac.at/obvutwhs/download/pdf/2874742)
-* [Scheidl - Word Beam Search: A Connectionist Temporal Classification Decoding Algorithm](doc/paper.pdf)
+* [Scheidl - Handwritten Text Recognition in Historical Documents](https://githubharald.github.io/publications.html)
+* [Scheidl - Word Beam Search: A Connectionist Temporal Classification Decoding Algorithm](https://githubharald.github.io/publications.html)
